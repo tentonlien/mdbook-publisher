@@ -1,2 +1,2 @@
 @echo off
-python mdpub.py %1%
+python mdpub.py %1 %2 %3
