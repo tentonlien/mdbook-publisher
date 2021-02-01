@@ -33,11 +33,11 @@ def generate(name, path):
                 title_pos_end = title_pos_end + 1
 
             title = elem[title_pos_start : title_pos_end]
-            with open('projects/' + name + '/src/' + title + '.md', 'w', encoding='utf-8') as fout:
+            with open('projects/' + name + '/src/' + title.replace(' ', '_') + '.md', 'w', encoding='utf-8') as fout:
                 fout.write('# ' + title + '\n' + elem[title_pos_end:len(elem)])
                 fout.close()
             
-            summary_text = summary_text + '- [' + title + '](./' + title + '.md)\n'
+            summary_text = summary_text + '- [' + title + '](./' + title.replace(' ', '_') + '.md)\n'
         
         # Generate SUMMARY.md
         with open('projects/' + name + '/src/SUMMARY.md', 'w', encoding='utf-8') as fout:
@@ -61,7 +61,9 @@ def upload(name, target, dest):
         print('Error: Target host not found')
         exit()
 
-    cmd = 'scp -r ./projects/' + name + '/book/* ' + target_host_info['username'] + '@' + target_host_info['address'] + ':' + dest
+
+    cmd = 'sshpass -p \'' + target_host_info['password'] + '\' scp -v -r ./projects/' + name + '/book/* ' + target_host_info['username'] + '@' + target_host_info['address'] + ':' + dest
+    print(cmd)
     os.system(cmd)
 
 
